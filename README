@@ -1,0 +1,70 @@
+Delicious Inbox Exporter Ruby Script
+====================================
+
+Delicious does not provide any official means to export your inbox items, but
+for many people these are an import part of their personal data.
+
+This script will scrape your inbox page(s) from delicious.com and output a
+Netscape-style bookmarks HTML document. You can then import the document into
+your browser or into another online bookmarking product.
+
+Use of this script is at your own risk. Run it too often and you may get
+blocked or banned from Delicious.
+
+Requirements
+============
+
+- ruby
+- rubygems
+- hpricot gem
+
+Instructions
+============
+
+Running this script requires a tiny bit of manual effort. You need to provide
+the script with your delicious authentication cookies. This is easy, and
+instructions are given interactively when you run the script.
+
+You may optionally want to review the "output configuration" section of the
+script source and tweak settings related to how exported items should look.  By
+default, all items will be additionall tagged with "inbox" as well as
+"from:delicious/johndoe", and "[from John Doe]" where John Doe is the sending
+user.
+
+Run the script with the name of the output bookmarks HTML file as the first
+argument.  For instance:
+
+  ruby inboxexporter.rb inboxbookmarks.html
+
+
+Contributions
+=============
+
+Please feel free to fork this, improve it, make it easier, and/or contact me
+with questions or pull requests.
+
+-Josh Whiting, @yetanotherjosh on twitter
+
+
+License
+=======
+
+Copyright (c) 2010 Josh Whiting
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE
