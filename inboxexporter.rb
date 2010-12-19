@@ -1,23 +1,20 @@
-=begin
+# Please see README for introductory information.
+#
+# OUTPUT CONFIGURATION
+# ====================
+# 
+# These defaults will work fine, but they are here for you to change according
+# to your preferences.
 
-Please see README for introductory information.
+add_tags = 'inbox'              # these tags will be added to every inbox item
+                                # (space-separated)
 
-************************************
-* OUTPUT CONFIGURATION
-************************************
+mark_private = true             # items will be marked private, using a
+                                # PRIVATE="1" attribute in the anchor tag
 
-These defaults will work fine, but you may wish to change the way inbox items
-are tagged, how the sending user is referenced, etc.
-
-=end
-
-add_tags = 'inbox'              # these tags (space-separated) will be added to
-                                # every inbox item
-
-mark_private = true             # items will be marked private
-
-description_sender = true       # the description will be appended with
-                                # the sender in description_sender_format.
+description_sender = true       # the description (aka "notes") will be
+                                # appended with the sender according to
+                                # description_sender_format
 
 description_sender_format = "[from %PROFILENAME%]"
                                 # %PROFILENAME% will be replaced with the
@@ -27,7 +24,8 @@ description_sender_format = "[from %PROFILENAME%]"
                                 # sending user has not setup a profile name in
                                 # their delicious account settings
 
-tag_sender = true               # add a tag for the sending user
+tag_sender = true               # add a tag for the sending user according to
+                                # tag_sender_format
 
 tag_sender_format = "from:delicious/%USERNAME%"
                                 # %USERNAME% will be replaced with the
@@ -35,15 +33,11 @@ tag_sender_format = "from:delicious/%USERNAME%"
                                 # is not supported in this case.
 
 page_request_delay = 500        # how many milliseconds to wait between page
-                                # loads.
+                                # loads, to be nice on Yahoo's servers.
 
-=begin
+# END CONFIGURATION
 
-************************************
-* END OF CONFIGURATION
-************************************
-        
-=end
+
 
 require 'net/http'
 require 'uri'
@@ -54,8 +48,8 @@ require 'time'
 
 puts "
 This script does not automate the login process. You need to login to Delicious
-and then copy/paste your authenticated site cookies here. It's really quite
-easy:
+and then copy/paste your authenticated site cookies here. Although strange,
+it's plenty secure and really quite easy:
 
 1. Sign in to Delicious
 
@@ -72,7 +66,7 @@ easy:
 
 Note: this data will be discarded when the script completes for your security
 
-Please paste the blurb now, and hit return:
+Please paste the cookie blurb now, and hit return:
 
 "
 
@@ -112,12 +106,9 @@ end
 items = []
 page = 1
 morepages = true
-
 while (morepages) do
 
   puts "Fetching and parsing inbox page #{page}..."
-
-  # fetch the page and parse into hpricot doc
   url = URI.parse("http://www.delicious.com/inbox/#{username}?page=#{page}&setcount=100")
   path = url.path + (url.query ? "?"+url.query : "")
   req = Net::HTTP::Get.new(path)
@@ -129,7 +120,7 @@ while (morepages) do
   }
   doc = Hpricot.parse(res.body)
 
-  # pull out the items
+  # let the scraping begin
   page_items = []
   date_group = nil
   doc.search("li").each { |li|
@@ -169,7 +160,7 @@ while (morepages) do
   items.concat(page_items)
   puts "Got #{page_items.count} items from page #{page} (#{items.count} total so far)"
 
-  # check pagination for more pages
+  # check pagination div to see if there's a "next" element
   morepages = false
   doc.search("div[@id~='pagination']").each do |d|
     d.search("a[@class~='next']").each do |a|
@@ -177,9 +168,12 @@ while (morepages) do
     end
   end
   page += 1
+
+  # be nice to yahoo
   sleep (page_request_delay/1000.0) if morepages
 
   if items.empty?
+    # in theory this shouldn't happen.
     puts "Oops, something has gone wrong - no inbox items were found."
     puts "Please check that you've followed all the instructions."
     puts "Possible causes:"
@@ -193,7 +187,7 @@ while (morepages) do
   end
 end
 
-# write output in netscape bookmark style
+# scraping done, write output in netscape bookmark style
 outfile.puts '<!DOCTYPE NETSCAPE-Bookmark-file-1>'
 outfile.puts '<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">'
 outfile.puts "<TITLE>Bookmarks</TITLE>"
@@ -202,12 +196,15 @@ outfile.puts "<DL><p>"
 
 items.each do |item|
   add_tags.split(/\s+/).each do |tag|
+    # add custom tags
     item[:tags] << tag unless tag.empty?
   end
   if tag_sender
+    # add sender tag
     item[:tags] << tag_sender_format.gsub(/\%USERNAME\%/,item[:from_user_name])
   end
   if description_sender
+    # add sender to description
     desc = description_sender_format.dup
     desc.gsub!(/\%USERNAME\%/,item[:from_user_name])
     desc.gsub!(/\%PROFILENAME\%/,item[:from_user_profile_name])
@@ -216,7 +213,11 @@ items.each do |item|
   end
   outfile.puts '<DT><A '+
     'HREF="' + CGI::escapeHTML(item[:url]) + '" ' +
+    # forunately, Time.parse seems to work fine with the "16 DEC 10" style dates
+    # that Delicious renders next to items. unforunately we don't get further
+    # granularity than that:
     'ADD_DATE="' + Time.parse(item[:date]).to_i.to_s + '" '+
+    # PRIVATE="0"/"1" is a convention started by Delicious' own export feature:
     'PRIVATE="' + (mark_private ? "1" : "0") + '" '+
     'TAGS="' + CGI::escapeHTML(item[:tags].join(",")) + '"' +
     '>' + CGI::escapeHTML(item[:title]) + "</A>"

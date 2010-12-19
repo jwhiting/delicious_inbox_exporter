@@ -2,14 +2,16 @@ Delicious Inbox Exporter Ruby Script
 ====================================
 
 Delicious does not provide any official means to export your inbox items, but
-for many people these are an import part of their personal data.
+for many users the inbox is a critical archive of personal data.
 
 This script will scrape your inbox page(s) from delicious.com and output a
-Netscape-style bookmarks HTML document. You can then import the document into
-your browser or into another online bookmarking product.
+Netscape-style bookmarks HTML document. You can then import the bookmarks into
+your browser or into any bookmarking product that supports this basic standard.
 
 Use of this script is at your own risk. Run it too often and you may get
-blocked or banned from Delicious.
+blocked or banned from Delicious. The results worked for me and a few friends
+who volunteered to test it, but there may still be bugs.
+
 
 Requirements
 ============
@@ -18,12 +20,13 @@ Requirements
 - rubygems
 - hpricot gem
 
+
 Instructions
 ============
 
 Running this script requires a tiny bit of manual effort. You need to provide
-the script with your delicious authentication cookies. This is easy, and
-instructions are given interactively when you run the script.
+it with your delicious authentication cookies. This is easy, implemented
+securely, and instructions are given interactively when you run the script.
 
 You may optionally want to review the "output configuration" section of the
 script source and tweak settings related to how exported items should look.  By
