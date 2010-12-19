@@ -27,9 +27,9 @@ instructions are given interactively when you run the script.
 
 You may optionally want to review the "output configuration" section of the
 script source and tweak settings related to how exported items should look.  By
-default, all items will be additionall tagged with "inbox" as well as
-"from:delicious/johndoe", and "[from John Doe]" where John Doe is the sending
-user.
+default, all items will be additionally tagged with "inbox" and
+"from:delicious/johndoe", and the description will be appened with "[from John
+Doe]" -- where John Doe is the sending user.
 
 Run the script with the name of the output bookmarks HTML file as the first
 argument.  For instance:
