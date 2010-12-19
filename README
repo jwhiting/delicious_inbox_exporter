@@ -12,6 +12,11 @@ Use of this script is at your own risk. Run it too often and you may get
 blocked or banned from Delicious. The results worked for me and a few friends
 who volunteered to test it, but there may still be bugs.
 
+I invite you to submit your comments about this script to my blog post on the
+subject:
+
+http://blog.yetanotherjosh.com/past/2010/12/19/export_your_delicious_inbox_with_a_ruby_script/
+
 
 Requirements
 ============
@@ -46,7 +51,11 @@ Contributions
 Please feel free to fork this, improve it, make it easier, and/or contact me
 with questions or pull requests.
 
--Josh Whiting, @yetanotherjosh on twitter
+Twitter: @yetanotherjosh
+Blog: http://blog.yetanotherjosh.com/
+
+Cheers,
+-Josh
 
 
 License
