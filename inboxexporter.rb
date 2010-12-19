@@ -158,7 +158,7 @@ while (morepages) do
     end
   }
   items.concat(page_items)
-  puts "Got #{page_items.count} items from page #{page} (#{items.count} total so far)"
+  puts "Got #{page_items.length} items from page #{page} (#{items.length} total so far)"
 
   # check pagination div to see if there's a "next" element
   morepages = false
@@ -226,4 +226,4 @@ end
 
 outfile.puts "</DL><p>"
 outfile.close
-puts "Exported #{items.count} total items to #{out_fn}"
+puts "Exported #{items.length} total items to #{out_fn}"
